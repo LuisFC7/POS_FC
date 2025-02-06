@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'drf_yasg'
+    'drf_yasg',
+    'backpos'
 ]
 
 MIDDLEWARE = [
@@ -77,9 +78,20 @@ WSGI_APPLICATION = 'backpos.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'pos_database',
+        'USER': 'root',
+        'PASSWORD': 'Basesdedatosmysql1',
+        'HOST': 'localhost',
+        'PORT': '3306'
+        # 'NAME': BASE_DIR / 'db.mysql',
     }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
 }
 
 
