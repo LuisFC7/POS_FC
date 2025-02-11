@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -135,3 +137,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# CONFIGURACION DEL TOKEN JWT
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # Tiempo de expiración del token de acceso
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # Tiempo de expiración del token de actualización
+    'ROTATE_REFRESH_TOKENS': False,  # Si quieres usar tokens de actualización rotativos
+    'BLACKLIST_AFTER_ROTATION': True,  # Si deseas utilizar el sistema de blacklist
+    'ALGORITHM': 'HS256',  # Algoritmo para firmar el token
+    'SIGNING_KEY': SECRET_KEY,  # Usa el mismo SECRET_KEY que en tu settings.py
+}

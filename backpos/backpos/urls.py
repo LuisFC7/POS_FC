@@ -4,7 +4,7 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-from backpos.Controllers.login_controllers import login_controller, registrar_usuario_controller
+from backpos.Controllers.login_controllers import login_controller, registrar_usuario_controller, login_usuario_controller
 
 # urlpatterns = [
 #     path('admin/', admin.site.urls),
@@ -29,5 +29,6 @@ urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     
     path('login/', login_controller, name='login'),
-    path('crear_usuario', registrar_usuario_controller, name='registrar_usuario')
+    path('crear_usuario', registrar_usuario_controller, name='registrar_usuario'),
+    path('login_usuario', login_usuario_controller, name='login_usuario')
 ]

@@ -2,6 +2,7 @@ from django.db import models
 
 class Empresa(models.Model):
     
+    id_empresa = models.AutoField(primary_key=True)
     nombre_empresa = models.CharField(max_length=255)
     razon_social_empresa = models.CharField(max_length=255)
     rfc_empresa = models.CharField(max_length=255, null=True, blank=True)
@@ -13,6 +14,8 @@ class Empresa(models.Model):
     codigo_postal_empresa = models.CharField(max_length=10)
     status_empresa = models.SmallIntegerField()
 
-    
+    class Meta:
+        db_table = "empresas"
+        
     def __str__(self):
         return self.nombre_empresa

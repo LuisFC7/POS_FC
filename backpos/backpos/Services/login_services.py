@@ -1,14 +1,19 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth import authenticate
+from rest_framework import status
+from django.contrib.auth.hashers import check_password
 
-# from Models.usuarios_model import Usuario
+from backpos.Models.empresas_model import Empresa
 from backpos.Models.usuarios_model import Usuario
+from backpos.utilidades import generar_token
 
 def login():
     return "Hola"
 
-def crear_usuario(nombre_usuario, alias_usuario, correo_usuario, password_usuario,id_empresa):
+def crear_usuario(nombre_usuario, alias_usuario, correo_usuario, password_usuario):
 
+    #PRIMERO VERIFICAR QUE EL CORREO Y EL USUARIO NO EXISTA EN LA DB
     usuario = Usuario(
         nombre_usuario = nombre_usuario,
         alias_usuario = alias_usuario,
@@ -16,10 +21,62 @@ def crear_usuario(nombre_usuario, alias_usuario, correo_usuario, password_usuari
         password_usuario = password_usuario,
         tipo_usuario = 1,
         status = 1,
-        id_empresa_usuario = id_empresa
     )
     
+    search_correo = Usuario.objects.filter(correo_usuario = correo_usuario)
+    search_usuario = Usuario.objects.filter(alias_usuario = alias_usuario)
+   
+    if search_correo.exists():  
+        return 1
+    if search_usuario.exists():
+        return 2
+    
+    empresa = Empresa.objects.get(id_empresa = 1)
+    usuario.id_empresa_usuario = empresa
     usuario.password_usuario = make_password(password_usuario)
     
     usuario.save()
-    return 1
+    return 0
+
+
+# def login_usuario(identificador_user, password_user):
+    
+#     usuario = authenticate(username=identificador_user, password=password_user)
+    
+#     if usuario is not None:
+#         refresh_token = RefreshToken.for_user(usuario)
+#         access_token = refresh_token.access_token
+#         return {
+#                 'access_token': str(access_token),
+#                 'refresh_token': str(refresh_token),
+#                 'codigo' : 0
+#             }
+#     else:
+#         return{
+#             'codigo':1
+#         }
+        # return ({
+        #     'error': 'Credenciales no válidas'
+        # }, status=status.HTTP_401_UNAUTHORIZED)
+        
+
+def login_usuario(identificador_user, password_user):
+    
+    try:
+        usuario = Usuario.objects.get(correo_usuario = identificador_user)
+    except Usuario.DoesNotExist:
+        return {"codigo": 1, "error": "Usuario no encontrado"}
+    
+
+    if not check_password(password_user, usuario.password_usuario):
+        return {"codigo": 1, "error": "Contraseña incorrecta"}
+       
+    access_token = generar_token(usuario)
+    
+
+    return {
+        'access_token': access_token,
+        'codigo': 0
+    }
+
+    
