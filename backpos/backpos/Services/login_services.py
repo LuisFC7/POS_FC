@@ -38,28 +38,7 @@ def crear_usuario(nombre_usuario, alias_usuario, correo_usuario, password_usuari
     usuario.save()
     return 0
 
-
-# def login_usuario(identificador_user, password_user):
-    
-#     usuario = authenticate(username=identificador_user, password=password_user)
-    
-#     if usuario is not None:
-#         refresh_token = RefreshToken.for_user(usuario)
-#         access_token = refresh_token.access_token
-#         return {
-#                 'access_token': str(access_token),
-#                 'refresh_token': str(refresh_token),
-#                 'codigo' : 0
-#             }
-#     else:
-#         return{
-#             'codigo':1
-#         }
-        # return ({
-        #     'error': 'Credenciales no válidas'
-        # }, status=status.HTTP_401_UNAUTHORIZED)
         
-
 def login_usuario(identificador_user, password_user):
     
     try:
@@ -79,4 +58,5 @@ def login_usuario(identificador_user, password_user):
         'codigo': 0
     }
 
+def actualizar_usuario(nombre, user, correo, password, tipo, status):
     

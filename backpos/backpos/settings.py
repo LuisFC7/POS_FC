@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-l$3jv)^9e8^=x@1$d0p&$o@9%_!f%x6=x%eu$t26-ty759(!le'
+SECRET_KEY = '0csdcsF668adaC&S7scdc28erviKlspuqwces&sqa!(xyayqq)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,8 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
     'drf_yasg',
-    'backpos'
+    'backpos',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -52,6 +54,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",  
 ]
 
 ROOT_URLCONF = 'backpos.urls'
@@ -140,10 +147,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CONFIGURACION DEL TOKEN JWT
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # Tiempo de expiración del token de acceso
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # Tiempo de expiración del token de actualización
-    'ROTATE_REFRESH_TOKENS': False,  # Si quieres usar tokens de actualización rotativos
-    'BLACKLIST_AFTER_ROTATION': True,  # Si deseas utilizar el sistema de blacklist
-    'ALGORITHM': 'HS256',  # Algoritmo para firmar el token
-    'SIGNING_KEY': SECRET_KEY,  # Usa el mismo SECRET_KEY que en tu settings.py
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS512',  
+    'SIGNING_KEY': SECRET_KEY,  
+    'JTI_CLAIM': 'jti',
 }

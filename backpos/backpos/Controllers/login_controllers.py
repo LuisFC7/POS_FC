@@ -36,56 +36,59 @@ usuario_schema = openapi.Schema(
 )
 @api_view(['POST'])
 def registrar_usuario_controller(request):
+    
     if request.method == 'POST':
         try:
-            print(f"Authorization en Headers: {request.headers.get('Authorization')}")
-            print(f"Authorization en META: {request.META.get('HTTP_AUTHORIZATION')}")
-
-            # VERIFICACION DE LOS TOKENS
+            # Obtén el token desde la cabecera 'Authorization'
+            print(request.headers)
             token = request.headers.get('Authorization')
-            print("Antes de pasar")
-            print(token)
-            
+
+            # Verifica que el token esté presente
             if not token:
-                return Response({"error": "Token no proporcionado"}, status = status.HTTP_401_UNAUTHORIZED)
-            
-            token = token.split(" ")[1] if " " in token else token
-            
+                return Response({"error": "Token no proporcionado"}, status=status.HTTP_401_UNAUTHORIZED)
+
+            # Si el token tiene el prefijo 'Bearer ', lo extraemos
+            if " " in token:
+                token = token.split(" ")[1]  # Extrae solo el token sin el prefijo 'Bearer'
+
+            # Verifica si el token es válido
             payload = verificar_token(token)
             if not payload:
-                return Response({"error": "Token inválido o expirado"}, status = status.HTTP_401_UNAUTHORIZED)
-            
+                return Response({"error": "Token inválido o expirado"}, status=status.HTTP_401_UNAUTHORIZED)
+
+            # Si el token es válido, continúa con la creación del usuario
             nombre_usuario = request.data.get('nombre')
             alias_usuario = request.data.get('usuario')
             correo_usuario = request.data.get('correo')
             password_usuario = request.data.get('password')
-            
+
+            # Validaciones de los campos
             password_regex = r'^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+={}\[\]:;"\'<>,.?/\\|`~])[A-Za-z\d!@#$%^&*()_+={}\[\]:;"\'<>,.?/\\|`~]{8,}$'
             
-            if not isinstance(nombre_usuario, str) or nombre_usuario is None:
-                return Response({"Error": "El correo proporcionado debe estar en formato texto."}, status=status.HTTP_400_BAD_REQUEST)
-            
-            if not isinstance(alias_usuario, str) or alias_usuario is None:
-                return Response({"Error": "El correo proporcionado debe estar en formato texto."}, status=status.HTTP_400_BAD_REQUEST)
-            
-            if not isinstance(correo_usuario, str) or correo_usuario is None:
-                return Response({"Error": "El correo proporcionado debe estar en formato texto."}, status=status.HTTP_400_BAD_REQUEST)
-            
+            if not isinstance(nombre_usuario, str) or not nombre_usuario:
+                return Response({"error": "El nombre debe estar en formato texto."}, status=status.HTTP_400_BAD_REQUEST)
+
+            if not isinstance(alias_usuario, str) or not alias_usuario:
+                return Response({"error": "El alias debe estar en formato texto."}, status=status.HTTP_400_BAD_REQUEST)
+
+            if not isinstance(correo_usuario, str) or not correo_usuario:
+                return Response({"error": "El correo debe estar en formato texto."}, status=status.HTTP_400_BAD_REQUEST)
+
             if not re.match(password_regex, password_usuario):
                 return Response({"error": "La contraseña debe tener al menos 8 caracteres, incluir una letra mayúscula, un dígito y un carácter especial."}, status=status.HTTP_400_BAD_REQUEST)
-            
+
+            # Suponiendo que tienes una función para crear el usuario
             code_servicio = crear_usuario(nombre_usuario, alias_usuario, correo_usuario, password_usuario)
-            
+
             if code_servicio == 1:
                 return Response({"error": "El correo ingresado ya existe, intente con otro."}, status=status.HTTP_409_CONFLICT)
-            
+
             if code_servicio == 2:
                 return Response({"error": "El usuario ingresado ya existe, intente con otro."}, status=status.HTTP_409_CONFLICT)
-            
+
             return Response({"message": "Usuario registrado exitosamente."}, status=status.HTTP_201_CREATED)
 
         except Exception as e:
-            
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 # SERVICIO PARA INICIO DE SESIÓN
