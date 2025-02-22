@@ -2,6 +2,7 @@ import jwt
 from datetime import datetime, timedelta, timezone
 from django.conf import settings
 from backpos.settings import SECRET_KEY
+from cryptography.fernet import Fernet
 
 
 def generar_token(usuario):
@@ -15,7 +16,6 @@ def generar_token(usuario):
     }
     
     token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS512")
-    
     return token
 
 def verificar_token(token):
@@ -27,3 +27,5 @@ def verificar_token(token):
         return {"error": "Token expirado"}
     except jwt.InvalidTokenError:
         return {"error": "Token inválido"}
+    
+    

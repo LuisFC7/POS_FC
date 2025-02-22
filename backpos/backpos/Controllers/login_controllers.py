@@ -150,10 +150,23 @@ def login_usuario_controller(request):
             if codigo == 1:
                 return Response({"error": "Credenciales incorrectas o usuario inexistente"}, status=status.HTTP_401_UNAUTHORIZED)
 
-            return Response({
-                'mensaje': "Inicio de sesión exitoso",
-                'access_token': str(access_token),
-            }, status=status.HTTP_200_OK)
+            # Crear respuesta sin token en el cuerpo
+            response = Response(
+                {"mensaje": "Inicio de sesión exitoso"},
+                status=status.HTTP_200_OK
+            )
+
+            # Configurar cookie segura con el token
+            response.set_cookie(
+                key="access_token",
+                value=access_token,
+                httponly=True,  # No accesible por JavaScript (protege contra XSS)
+                secure=True,  # Solo se envía en HTTPS
+                samesite="Strict",  # Previene CSRF en la mayoría de los casos
+                max_age=3600  # Expira en 1 hora
+            )
+
+            return response
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
