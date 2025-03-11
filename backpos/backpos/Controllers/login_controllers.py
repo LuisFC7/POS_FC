@@ -39,22 +39,22 @@ def registrar_usuario_controller(request):
     
     if request.method == 'POST':
         try:
-            # Obtén el token desde la cabecera 'Authorization'
-            print(request.headers)
-            token = request.headers.get('Authorization')
+           
+            # print(request.headers)
+            # token = request.headers.get('Authorization')
 
-            # Verifica que el token esté presente
-            if not token:
-                return Response({"error": "Token no proporcionado"}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            # if not token:
+            #     return Response({"error": "Token no proporcionado"}, status=status.HTTP_401_UNAUTHORIZED)
 
-            # Si el token tiene el prefijo 'Bearer ', lo extraemos
-            if " " in token:
-                token = token.split(" ")[1]  # Extrae solo el token sin el prefijo 'Bearer'
+           
+            # if " " in token:
+            #     token = token.split(" ")[1]  
 
-            # Verifica si el token es válido
-            payload = verificar_token(token)
-            if not payload:
-                return Response({"error": "Token inválido o expirado"}, status=status.HTTP_401_UNAUTHORIZED)
+            
+            # payload = verificar_token(token)
+            # if not payload:
+            #     return Response({"error": "Token inválido o expirado"}, status=status.HTTP_401_UNAUTHORIZED)
 
             # Si el token es válido, continúa con la creación del usuario
             nombre_usuario = request.data.get('nombre')
