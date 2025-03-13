@@ -10,7 +10,7 @@ def generar_token(usuario):
     tiempo_exp = datetime.now(timezone.utc) + timedelta(hours=1)
     
     payload = {
-        "usuario_id": usuario.id_usuario,  
+        "usuario_id": usuario.correo_usuario,  
         "nombre_usuario": usuario.nombre_usuario,  
         "exp": tiempo_exp  
     }

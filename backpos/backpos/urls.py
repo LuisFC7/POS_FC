@@ -5,7 +5,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 from backpos.Controllers.login_controllers import login_controller, registrar_usuario_controller, login_usuario_controller
-
+from backpos.Controllers.menu_users_controllers import menu_principal_controller 
 # urlpatterns = [
 #     path('admin/', admin.site.urls),
 # ]
@@ -30,5 +30,6 @@ urlpatterns = [
     
     path('login/', login_controller, name='login'),
     path('crear_usuario', registrar_usuario_controller, name='registrar_usuario'),
-    path('login_usuario', login_usuario_controller, name='login_usuario')
+    path('login_usuario', login_usuario_controller, name='login_usuario'),
+    path('home', menu_principal_controller, name='menu_principal_usuario'),
 ]
