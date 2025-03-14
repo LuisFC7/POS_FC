@@ -58,5 +58,5 @@ def login_usuario(identificador_user, password_user):
         'codigo': 0
     }
 
-# def actualizar_usuario(nombre, user, correo, password, tipo, status):
-    
+
+        
