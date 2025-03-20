@@ -8,6 +8,7 @@ from drf_yasg import openapi
 from django.http import JsonResponse
 from backpos.Services.login_services import login
 from backpos.Services.login_services import crear_usuario, login_usuario
+from backpos.Models.usuarios_model import Usuario
 
 from backpos.utilidades import verificar_token
 
@@ -143,6 +144,8 @@ def login_usuario_controller(request):
                 return Response({"error": "Debe ingresar la contraseña"}, status=status.HTTP_400_BAD_REQUEST)
 
             response_servicio = login_usuario(identificador, password_usuario)
+            
+            
 
             access_token = response_servicio.get('access_token')
             codigo = response_servicio.get('codigo')
@@ -214,6 +217,13 @@ def logout_usuario_controller(request):
            
             response = Response({"message": "Sesión cerrada exitosamente"})
             response.delete_cookie("access_token")  
+            
+            user = payload.get("usuario_id")
+            
+            usuario = Usuario.objects.get(correo_usuario = user)
+            usuario.validation_user = None
+            usuario.save()
+           
 
             return response 
 

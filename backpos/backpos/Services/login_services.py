@@ -52,7 +52,9 @@ def login_usuario(identificador_user, password_user):
        
     access_token = generar_token(usuario)
     
-
+    usuario.validation_user = access_token
+    usuario.save()
+    
     return {
         'access_token': access_token,
         'codigo': 0

@@ -10,7 +10,8 @@ class Usuario(models.Model):
     password_usuario = models.CharField(max_length=255)  
     tipo_usuario = models.SmallIntegerField()
     status = models.SmallIntegerField()
-    id_empresa_usuario = models.ForeignKey(Empresa, on_delete=models.CASCADE, db_column="id_empresa_usuario")  # Usa el nombre correcto
+    id_empresa_usuario = models.ForeignKey(Empresa, on_delete=models.CASCADE, db_column="id_empresa_usuario") 
+    validation_user = models.CharField(max_length=255)
 
     class Meta:
         db_table = "usuarios"
