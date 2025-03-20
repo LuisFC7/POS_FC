@@ -10,13 +10,40 @@ import { useNavigation } from '@react-navigation/native';
 const PrincipalPage = () => {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
+  const [menuItems, setMenuItems] = useState([]);
   const navigation = useNavigation();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("/home"); 
+        const response = await api.get("/home");
         setData(response.data);
+
+        // Transformar la respuesta en el formato correcto para el menú
+        const opciones = response.data.opciones;
+
+        const menuMap = {}; // Para agrupar opciones
+        opciones.forEach(({ Opcion, Subopcion }) => {
+          if (!menuMap[Opcion]) {
+            menuMap[Opcion] = { label: Opcion, subItems: [] };
+          }
+          if (Subopcion) {
+            menuMap[Opcion].subItems.push({
+              label: Subopcion,
+              onPress: () => {}  // Acción vacía
+            });
+          }
+        });
+        
+
+        // Convertir el objeto en un array
+        const formattedMenu = Object.values(menuMap).map(item => ({
+          label: item.label,
+          ...(item.subItems.length > 0 ? { subItems: item.subItems } : { onPress: () => {} }) // Acción vacía
+        }));
+        
+
+        setMenuItems(formattedMenu);
       } catch (err) {
         setError("Error al cargar los datos");
         console.error(err);
@@ -28,40 +55,22 @@ const PrincipalPage = () => {
 
   const logout = async () => {
     try {
-      
-      const response = await api.post("/logout_usuario", {}, {
-        withCredentials: true 
-      });
-  
-      await AsyncStorage.removeItem('token'); 
-  
-      navigation.navigate('login');  
-      console.log("Sesión cerrada exitosamente");
+      await api.post("/logout_usuario", {}, { withCredentials: true });
+      await AsyncStorage.removeItem('token');
+      navigation.navigate('login');
     } catch (err) {
       console.error("Error al cerrar sesión", err);
     }
   };
-  
-
-  const menuItems = [
-    { label: "Inicio", onPress: () => console.log("Ir a Inicio") },
-    { 
-      label: "Configuración", 
-      subItems: [
-        { label: "Perfil", onPress: () => console.log("Ir a Perfil") },
-        { label: "Seguridad", onPress: () => console.log("Ir a Seguridad") }
-      ]
-    },
-    { label: "Ayuda", onPress: () => console.log("Ir a Ayuda") },
-  ];
 
   return (
     <View style={tw`flex-row h-full`}>
-     
+      {/* Menú lateral */}
       <View style={tw`w-1/4 bg-gray-200 p-4`}>
         <LateralMenu items={menuItems} />
       </View>
 
+      {/* Contenido principal */}
       <View style={tw`w-3/4 bg-white p-4`}>
         <TouchableOpacity onPress={logout} style={tw`absolute top-4 right-4`}>
           <Icon name="sign-out" size={30} color="#000" />

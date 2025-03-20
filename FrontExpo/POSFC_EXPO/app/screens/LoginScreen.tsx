@@ -2,7 +2,7 @@ import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import { useRouter } from "expo-router";
 import tw from "tailwind-react-native-classnames";
-import { login } from "../api/loginApi";  // Importamos la función login
+import { login } from "../api/loginApi";  
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -12,7 +12,7 @@ export default function LoginScreen() {
   const [password, setPassword] = useState("");
   const [mensaje, setMensaje] = useState("");
 
-  // Manejar la petición de login
+
   const handleLogin = async () => {
     try {
       
@@ -44,11 +44,10 @@ export default function LoginScreen() {
             placeholder="tuemail@ejemplo.com"
             style={tw`border border-gray-300 rounded-md px-3 py-2 text-gray-900`}
             value={email}
-            onChangeText={setEmail} // Actualiza el estado
+            onChangeText={setEmail} 
           />
         </View>
 
-        {/* Contraseña */}
         <View style={tw`mb-4`}>
           <Text style={tw`text-gray-900 font-semibold mb-1`}>Contraseña</Text>
           <TextInput
@@ -56,22 +55,22 @@ export default function LoginScreen() {
             secureTextEntry
             style={tw`border border-gray-300 rounded-md px-3 py-2 text-gray-900`}
             value={password}
-            onChangeText={setPassword} // Actualiza el estado
+            onChangeText={setPassword} 
           />
         </View>
 
         {/* Botón de Iniciar Sesión */}
         <TouchableOpacity
-          onPress={handleLogin} // Llamamos a la función que hace la petición
+          onPress={handleLogin}
           style={tw`bg-indigo-600 py-3 rounded-md mt-4`}
         >
           <Text style={tw`text-white text-center font-semibold`}>Iniciar Sesión</Text>
         </TouchableOpacity>
 
-        {/* Mensaje de error o éxito */}
+        
         {mensaje ? <Text style={tw`text-center text-red-500 mt-4`}>{mensaje}</Text> : null}
 
-        {/* Link de Registro */}
+        
         <Text style={tw`text-center text-gray-500 mt-6`}>
           ¿No tienes cuenta?{" "}
           <Text style={tw`text-indigo-600 font-semibold`} onPress={() => router.push("/register")}>
