@@ -42,7 +42,7 @@ def registrar_usuario_controller(request):
     if request.method == 'POST':
         try:
            
-            token = request.headers.get('Authorization')
+            token = request.COOKIES.get('access_token')
 
             
             if not token:

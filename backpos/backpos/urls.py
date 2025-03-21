@@ -6,6 +6,7 @@ from drf_yasg import openapi
 
 from backpos.Controllers.login_controllers import login_controller, registrar_usuario_controller, login_usuario_controller, logout_usuario_controller
 from backpos.Controllers.menu_users_controllers import menu_principal_controller 
+from backpos.Controllers.users_controllers import mostrar_usuarios_controller
 # urlpatterns = [
 #     path('admin/', admin.site.urls),
 # ]
@@ -33,4 +34,5 @@ urlpatterns = [
     path('login_usuario', login_usuario_controller, name='login_usuario'),
     path('logout_usuario', logout_usuario_controller, name='logout_usuario'),
     path('home', menu_principal_controller, name='menu_principal_usuario'),
+    path('update_users', mostrar_usuarios_controller, name='mostrar_usuarios_controller'),
 ]

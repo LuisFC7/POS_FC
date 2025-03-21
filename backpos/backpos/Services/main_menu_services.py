@@ -1,28 +1,3 @@
-# from backpos.Models.usuarios_model import Usuario
-# from django.db import connection
-
-# def mostrar_datos_usuario(usuario):
-#     try:
-#         usuario = Usuario.objects.get(correo_usuario = usuario)
-        
-#         #AQUI AGREGAR VALIDACION 
-#         if usuario.validation_user is None:
-#             raise ValueError("Error: acceso denegado")
-        
-#         #AQUI SE INGRESA LA LLAMADA A SP PARA MOSTRAR DATOS DE OPCIONES
-#         with connection.cursor() as cursor:
-#             cursor.callproc("GetOpcionesUsuarios", [usuario])
-#             resultados = cursor.fetchall()
-
-#         return resultados
-            
-#         return {
-#             'datos': f"Bienvenido {usuario.nombre_usuario}" 
-#         }
-        
-#     except Usuario.DoesNotExist:
-#         return {"codigo": 1, "error": "Usuario no encontrado"}
-    
 from backpos.Models.usuarios_model import Usuario
 from django.db import connection
 
