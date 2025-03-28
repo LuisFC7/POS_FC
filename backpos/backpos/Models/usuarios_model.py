@@ -12,6 +12,8 @@ class Usuario(models.Model):
     status = models.SmallIntegerField()
     # id_empresa_usuario = models.ForeignKey(Empresa, on_delete=models.CASCADE, db_column="id_empresa_usuario") 
     validation_user = models.CharField(max_length=255)
+    fecha_creacion_usuario = models.DateTimeField(auto_now_add=True)
+    fecha_actualizacion_usuario = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = "usuarios"

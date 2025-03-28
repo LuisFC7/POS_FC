@@ -53,7 +53,8 @@ def login_usuario(identificador_user, password_user):
     access_token = generar_token(usuario)
     
     usuario.validation_user = access_token
-    usuario.save()
+    # usuario.save()
+    usuario.save(update_fields=['validation_user'])
     
     return {
         'access_token': access_token,
